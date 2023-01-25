@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int     @id @default(autoincrement())
+  email     String  @unique
+  password  String
+  firstName String?
+  lastName  String?
+  role      Role  @default(USER)
+
+  tickets Ticket[]
+
+  events Event[]
+
+  locationId Int?
+  location   Location? @relation(fields: [locationId], references: [id])
+
+  friends User[] @relation("Friends")
+  friendsOf User[] @relation("Friends")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+model Event {
+  id          Int           @id @default(autoincrement())
+  title       String
+  description String
+  date        DateTime
+  image       String
+  locationId  Int
+  location    Location      @relation(fields: [locationId], references: [id])
+  tickets     Ticket[]
+
+  attendees User[] 
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+}
+
+model Location {
+  id      Int     @id @default(autoincrement())
+  name    String
+  address String
+  city    String
+  state   String
+  zip     String
+  latitude  Float
+  longitude Float
+
+  users User[]
+  events Event[]
+}
+
+
+model Ticket {
+  id      Int   @id @default(autoincrement())
+  eventId Int
+  event   Event @relation(fields: [eventId], references: [id])
+  userId  Int?
+  user    User?  @relation(fields: [userId], references: [id])
+  price Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+}
+
+
