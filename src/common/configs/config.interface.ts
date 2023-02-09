@@ -6,7 +6,7 @@ export interface Config {
   //   swagger: SwaggerConfig;
   logger: LoggerConfig;
   graphql: GraphqlConfig;
-  security: SecurityConfig;
+  // security: SecurityConfig;
 }
 
 export interface NestConfig {

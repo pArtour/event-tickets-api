@@ -14,10 +14,10 @@ export class User extends BaseModel {
   @Field(() => String)
   email: string;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true, defaultValue: '' })
   firstName: string;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true, defaultValue: '' })
   lastName: string;
 
   @Field(() => Location, { nullable: true })

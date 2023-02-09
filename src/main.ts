@@ -3,12 +3,13 @@ import { ConfigService } from '@nestjs/config';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { PrismaClientExceptionFilter, PrismaService } from 'nestjs-prisma';
-
+import * as cookieParser from 'cookie-parser';
 import { AppModule } from 'src/app.module';
 import { NestConfig, CorsConfig } from 'src/common/configs/config.interface';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe());
 
   // enable shutdown hook

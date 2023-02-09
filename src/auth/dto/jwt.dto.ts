@@ -1,6 +1,6 @@
 export class JwtDto {
   id: number;
-  userId: string;
+  userId: number;
   /**
    * Issued at
    */

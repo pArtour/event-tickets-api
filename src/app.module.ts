@@ -12,10 +12,23 @@ import config from 'src/common/configs/config';
 import { PrismaConfigService } from 'src/prisma-config.service';
 import { TicketModule } from './ticket/ticket.module';
 import { LocationModule } from './location/location.module';
+import Joi from 'joi';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, load: [config] }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [config],
+      validationSchema: Joi.object({
+        NODE_ENV: Joi.string()
+          .valid('development', 'production', 'test', 'provision')
+          .default('development'),
+        JWT_ACCESS_SECRET: Joi.string().required(),
+        JWT_ACCESS_TOKEN_EXPIRATION_TIME: Joi.number().required(),
+        JWT_REFRESH_SECRET: Joi.string().required(),
+        JWT_REFRESH_TOKEN_EXPIRATION_TIME: Joi.number().required(),
+      }),
+    }),
     PrismaModule.forRootAsync({
       isGlobal: true,
       useClass: PrismaConfigService,
